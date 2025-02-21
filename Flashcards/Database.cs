@@ -2,38 +2,39 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-namespace Flashcards
+namespace Flashcards;
+
+internal class Database
 {
-    internal class Database
+    private string connectionStringNoDb;
+    private string connectionStringDb;
+    private string databaseName;
+
+    public Database()
     {
-        private string connectionString;
-        private string databaseName;
+        connectionStringNoDb = ConfigurationManager.ConnectionStrings["dbString"].ConnectionString;
+        connectionStringDb = ConfigurationManager.ConnectionStrings["dbString2"].ConnectionString;
+        databaseName = ConfigurationManager.AppSettings.Get("dbName");
+    }
 
-        public Database()
+    public void CreateDatabase()
+    {
+        using (var conn = new SqlConnection(connectionStringNoDb))
         {
-            connectionString = ConfigurationManager.ConnectionStrings["dbString"].ConnectionString;
-            databaseName = ConfigurationManager.AppSettings.Get("dbName");
-        }
-
-        public void CreateDatabase()
-        {
-            using (var conn = new SqlConnection(connectionString))
-            {
-                var command = @$" IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '{databaseName}')
+            var command = @$" IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = '{databaseName}')
                 CREATE DATABASE {databaseName}";
-                conn.Execute(command);
-            }
-            connectionString += ";Database=afilipkowski_flashcards";
+            conn.Execute(command);
         }
+    }
 
-        public void CreateTables()
+    public void CreateTables()
+    {
+        using (var conn = new SqlConnection(connectionStringDb))
         {
-            using (var conn = new SqlConnection(connectionString))
-            {
-                var command = $@"IF OBJECT_ID(N'dbo.Stacks', N'U') IS NULL BEGIN
+            var command = $@"IF OBJECT_ID(N'dbo.Stacks', N'U') IS NULL BEGIN
                                  CREATE TABLE dbo.Stacks (
                                  Id INT PRIMARY KEY IDENTITY(1,1),
-                                 Name NVARCHAR(50) NOT NULL); END;
+                                 Name NVARCHAR(50) UNIQUE NOT NULL); END;
 
                                  IF OBJECT_ID(N'dbo.Cards', N'U') IS NULL BEGIN
                                  CREATE TABLE dbo.Cards (
@@ -44,8 +45,7 @@ namespace Flashcards
                                  PRIMARY KEY (Id, StackId),
                                  FOREIGN KEY (StackId) REFERENCES dbo.Stacks(Id) ON DELETE CASCADE
                                  ); END;";
-                conn.Execute(command);
-            }
+            conn.Execute(command);
         }
     }
 }
