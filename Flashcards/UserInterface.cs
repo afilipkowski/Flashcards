@@ -5,7 +5,8 @@ namespace Flashcards;
 
 internal class UserInterface
 {
-    private CardStackController cardStackController  = new();
+    private CardStackManager cardStackManager = new();
+    private FlashcardManager flashcardManager = new();
     public void MainMenu()
     {
         while (true)
@@ -14,18 +15,16 @@ internal class UserInterface
             var choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                 .Title("Welcome to [green]Flashcards App[/]! Choose an option:")
-                .AddChoices(new[] { "View stacks", "Create new stack", "Edit a stack", "Delete a stack", "Exit the app"}));
+                .AddChoices(new[] { "Manage stacks", "Manage flashcards", "Study", "Exit the app"}));
 
             switch (choice)
             {
-                case "View stacks":
-                    cardStackController.AddStack();
+                case "Manage stacks":  
+                    cardStackManager.DisplayStackOptions();
                     break;
-                case "Create new stack":
+                case "Manage flashcards":
                     break;
-                case "Edit a stack":
-                    break;
-                case "Delete a stack":
+                case "Study":
                     break;
                 case "Exit the app":
                     return;
