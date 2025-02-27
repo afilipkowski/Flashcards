@@ -43,8 +43,8 @@ namespace Flashcards
 
         internal static (string, string) GetFlashcardInput(bool edit = false)
         {
-            string term = UserInput.getStringInput($"Enter the {(edit ? "new" : "")} term: ");
-            string definition = UserInput.getStringInput($"Enter the {(edit ? "new" : "")} definition: ");
+            string term = UserInput.getStringInput($"Enter the{(edit ? " new" : "")} term: ");
+            string definition = UserInput.getStringInput($"Enter the{(edit ? " new" : "")} definition: ");
             return (term, definition);
         }
 
