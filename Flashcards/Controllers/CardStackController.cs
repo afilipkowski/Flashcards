@@ -35,24 +35,21 @@ internal class CardStackController
         }
     }
 
-    internal void DisplayStacks()
+    internal List<CardStack> GetAllStacks()
     {
+        List<CardStack> stacks = new();
         var sql = "SELECT * FROM Stacks ORDER BY Id";
         using (var connection = new SqlConnection(connectionString))
         {
-            var stacks = connection.Query<CardStack>(sql).ToList();
-            if (stacks.Count == 0)
-            {
-                AnsiConsole.MarkupLine("[red]No stacks found![/]");
-            }
-            else
-            {
-                foreach (var stack in stacks)
-                {
-                    AnsiConsole.MarkupLine($"[green]{stack.Id}[/]: {stack.Name}");
-                }
-            }
+            stacks = connection.Query<CardStack>(sql).ToList();
         }
+        return stacks;
+    }
+
+    internal Dictionary<string, int> GetStackNameToIdMap()
+    {
+        List<CardStack> stacks = GetAllStacks();
+        return stacks.ToDictionary(stack => stack.Name, stack => stack.Id);
     }
 
     internal void DeleteStack(int id)
@@ -91,10 +88,12 @@ internal class CardStackController
 
     internal bool StackExists(int id)
     {
+        bool exists;
         var sql = "SELECT COUNT(*) FROM Stacks WHERE Id = @Id";
         using (var connection = new SqlConnection(connectionString))
         {
-            return connection.ExecuteScalar<int>(sql, new { Id = id }) > 0;
+            exists = connection.ExecuteScalar<int>(sql, new { Id = id }) > 0;
         }
+        return exists;
     }
 }

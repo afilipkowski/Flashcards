@@ -23,6 +23,7 @@ internal class UserInterface
                     cardStackManager.DisplayStackOptions();
                     break;
                 case "Manage flashcards":
+                    flashcardManager.DisplayFlashcardOptions();
                     break;
                 case "Study":
                     break;
