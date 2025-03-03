@@ -2,7 +2,7 @@
 using Flashcards.Models;
 using Spectre.Console;
 
-namespace Flashcards;
+namespace Flashcards.Managers;
 
 internal class CardStackManager
 {

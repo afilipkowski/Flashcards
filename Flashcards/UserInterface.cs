@@ -1,4 +1,5 @@
 ﻿using Flashcards.Controllers;
+using Flashcards.Managers;
 using Spectre.Console;
 
 namespace Flashcards;
@@ -7,6 +8,7 @@ internal class UserInterface
 {
     private CardStackManager cardStackManager = new();
     private FlashcardManager flashcardManager = new();
+    private StudyManager studyManager = new();
     public void MainMenu()
     {
         while (true)
@@ -26,6 +28,7 @@ internal class UserInterface
                     flashcardManager.DisplayFlashcardOptions();
                     break;
                 case "Study":
+                    studyManager.DisplayStudyOptions();
                     break;
                 case "Exit the app":
                     return;

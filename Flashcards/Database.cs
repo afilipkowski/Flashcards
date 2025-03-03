@@ -44,7 +44,17 @@ internal class Database
                                  Definition NVARCHAR(100) NOT NULL,
                                  PRIMARY KEY (Id, StackId),
                                  FOREIGN KEY (StackId) REFERENCES dbo.Stacks(Id) ON DELETE CASCADE
-                                 ); END;";
+                                 ); END;
+
+                                 IF OBJECT_ID(N'dbo.StudySessions', N'U') IS NULL BEGIN
+                                 CREATE TABLE dbo.StudySessions (
+                                 Id int PRIMARY KEY IDENTITY(1,1),
+                                 StackId int NOT NULL,
+                                 Score int NOT NULL,
+                                 MaxScore int NOT NULL,
+                                 Date datetime2 NOT NULL,
+                                 FOREIGN KEY (StackId) REFERENCES dbo.Stacks(Id) ON DELETE CASCADE
+                                 ); END";
             conn.Execute(command);
         }
     }

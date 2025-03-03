@@ -96,4 +96,15 @@ internal class CardStackController
         }
         return exists;
     }
+
+    internal string GetStackNameById(int id)
+    {
+        string name;
+        var sql = "SELECT Name FROM Stacks WHERE Id = @Id";
+        using (var connection = new SqlConnection(connectionString))
+        {
+            name = connection.ExecuteScalar<string>(sql, new { Id = id });
+        }
+        return name;
+    }
 }
