@@ -40,7 +40,7 @@ internal class CardStackManager
                     id = UserInput.getIntInput("Enter ID of the stack you want to edit or enter 0 to return");
                     if (id != 0)
                     {
-                        UserInput.GetCorrectStackId(cardStackController, id);
+                        id = UserInput.GetCorrectStackId(cardStackController, id);
                         string name = UserInput.getStringInput("Enter new name for the stack: ");
                         cardStackController.EditStack(id, name);
                     }
@@ -50,7 +50,7 @@ internal class CardStackManager
                     id = UserInput.getIntInput("Enter ID of the stack you want to delete or enter 0 to return");
                     if (id != 0)
                     {
-                        UserInput.GetCorrectStackId(cardStackController, id);
+                        id = UserInput.GetCorrectStackId(cardStackController, id);
                         cardStackController.DeleteStack(id);
                     }
                     break;
